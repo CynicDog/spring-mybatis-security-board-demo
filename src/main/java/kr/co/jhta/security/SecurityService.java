@@ -2,6 +2,7 @@ package kr.co.jhta.security;
 
 import kr.co.jhta.repository.RoleDao;
 import kr.co.jhta.repository.UserDao;
+import kr.co.jhta.security.model.SecurityUser;
 import kr.co.jhta.vo.Role;
 import kr.co.jhta.vo.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,8 @@ public class SecurityService implements UserDetailsService {
             user.addRole(role.getRoleName());
         });
 
-        return user;
+        UserDetails userDetails = new SecurityUser(user);
+
+        return userDetails;
     }
 }
