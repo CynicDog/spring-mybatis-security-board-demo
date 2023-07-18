@@ -16,7 +16,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/board/list">Board</a>
+                    <a class="nav-link" href="/article/list">Board</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

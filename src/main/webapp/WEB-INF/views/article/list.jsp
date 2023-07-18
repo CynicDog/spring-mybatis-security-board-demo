@@ -23,7 +23,6 @@
 	</div>
 	<div class="row my-3 justify-content-center align-items-center">
 		<div class="col-12">
-			<p>Belows are found articles.</p>
 			<table class="table">
 				<thead>
 					<tr>
@@ -36,46 +35,32 @@
 					</tr>
 				</thead>
 				<tbody>
+				<c:choose>
+					<c:when test="${not empty articles}">
+						<c:forEach items="${articles}" var="article">
+							<tr>
+								<td>${article.id}</td>
+								<td><a href="">${article.title}</a></td>
+								<td>${article.readCount}</td>
+								<td>${article.reviewCount}</td>
+								<td>${article.author.email}</td>
+								<td><fmt:formatDate value="${article.createDate}" pattern="yyyy-MM-dd"/></td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
 					<tr >
 						<td colspan="6" class="text-center">No articles are found.</td>
 					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
+					</c:otherwise>
+				</c:choose>
 				</tbody>
 			</table>
-			<div class="text-end">
-				<a href="add" class="btn btn-outline-primary btn-sm">Post new article</a>
-			</div>
+			<sec:authorize access="isAuthenticated()">
+				<div class="text-end">
+					<a href="add" class="btn btn-outline-primary btn-sm">Post new article</a>
+				</div>
+			</sec:authorize>
 		</div>
 	</div>
 	<div class="row mb-3" >

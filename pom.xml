@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>kr.co.jhta</groupId>
-    <artifactId>spring-boot-security-board</artifactId>
+    <artifactId>spring-boot-security-article</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>spring-boot-security-board</name>
-    <description>spring-boot-security-board</description>
+    <name>spring-boot-security-article</name>
+    <description>spring-boot-security-article</description>
     <properties>
         <java.version>11</java.version>
     </properties>

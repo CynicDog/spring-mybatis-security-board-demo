@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<title>애플리케이션</title>
+	<title>Application</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,24 +18,24 @@
 <div class="container">
 	<div class="row my-3 justify-content-center align-items-center">
 		<div class="col-8">
-			<h1 class="border bg-light p-2 fs-4">게시글 등록폼</h1>
+			<h4 class="border bg-light p-2">Publish an article.</h4>
 		</div>
 	</div>
 	<div class="row my-3 justify-content-center align-items-center">
 		<div class="col-8">
-			<p>제목과 내용을 입력하고 게시글을 등록하세요.</p>
+
 			<form class="border bg-light p-3" method="post" action="add" >
 				<div class="form-group mb-3">
-					<label class="form-label">제목</label>
+					<label class="form-label">Title</label>
 					<input type="text" class="form-control" id="post-title" name="title"  />
 				</div>
 				<div class="form-group mb-3">
-					<label class="form-label">내용</label>
+					<label class="form-label">Content</label>
 					<textarea rows="5" class="form-control" id="post-content" name="content"  ></textarea>
 				</div>
 				<div class="text-end">
-					<a href="list?page=1" class="btn btn-secondary btn-sm">취소</a>
-					<button type="submit" class="btn btn-primary btn-sm">등록</button>
+					<a href="list?page=1" class="btn btn-secondary btn-sm">cancel</a>
+					<button type="submit" class="btn btn-primary btn-sm">submit</button>
 				</div>
 			</form>
 		</div>

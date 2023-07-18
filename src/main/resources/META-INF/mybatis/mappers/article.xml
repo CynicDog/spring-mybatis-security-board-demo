@@ -1,0 +1,72 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.repository.ArticleDao">
+    <insert id="insertArticle" parameterType="Article">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into boards (
+            title, content, user_id
+        ) values (
+            #{title}, #{content}, #{author.id}
+        )
+    </insert>
+
+    <select id="findAllArticlesPaginated">
+
+    </select>
+
+    <select id="findAllArticles" resultType="Article">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'author.id'
+        from
+            boards
+        order by
+            create_date desc
+    </select>
+
+    <select id="findById" parameterType="int" resultType="Article">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'author.id'
+        from
+            boards
+        where
+            id = #{value}
+    </select>
+
+    <select id="findArticlesByAuthorId" parameterType="int" resultType="Article">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'author.id'
+        from
+            boards
+        where
+            user_id = #{value}
+    </select>
+
+</mapper>

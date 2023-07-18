@@ -10,7 +10,6 @@ public class Role {
     public Role() {
     }
 
-    @Builder
     public Role(User user, String roleName) {
         this.user = user;
         this.roleName = roleName;

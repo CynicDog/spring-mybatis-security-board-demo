@@ -24,15 +24,6 @@ public class User {
     public User() {
     }
 
-    @Builder
-    public User(String email, String password, Date updateDate, Date createDate, List<String> roles) {
-        this.email = email;
-        this.password = password;
-        this.updateDate = updateDate;
-        this.createDate = createDate;
-        this.roles = roles;
-    }
-
     public int getId() {
         return id;
     }

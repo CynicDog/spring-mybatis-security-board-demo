@@ -1,10 +1,8 @@
 package kr.co.jhta.vo;
 
-import lombok.Builder;
-
 import java.util.Date;
 
-public class Board {
+public class Article {
 
     private int id;
     private String title;
@@ -15,22 +13,15 @@ public class Board {
     private String deleted;
     private Date updateDate;
     private Date createDate;
-    private User user;
+    private User author;
 
-    public Board() {
+    public Article() {
     }
 
-    @Builder
-    public Board(String title, String content, int readCount, int reviewCount, double reviewAvgScore, String deleted, Date updateDate, Date createDate, User user) {
+    public Article(String title, String content, User author) {
         this.title = title;
         this.content = content;
-        this.readCount = readCount;
-        this.reviewCount = reviewCount;
-        this.reviewAvgScore = reviewAvgScore;
-        this.deleted = deleted;
-        this.updateDate = updateDate;
-        this.createDate = createDate;
-        this.user = user;
+        this.author = author;
     }
 
     public int getId() {
@@ -101,11 +92,11 @@ public class Board {
         this.createDate = createDate;
     }
 
-    public User getUser() {
-        return user;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }
