@@ -68,7 +68,7 @@ public class MvcService {
         return articlesPopulated;
     }
 
-    public List<Article> findArticlesByAuthorId(int id, FetchType arg1) {
+    public List<Article> findArticlesByAuthorId(int id, FetchType arg1, FetchType arg2) {
 
         List<Article> articles = articleDao.findArticlesByAuthorId(id);
 
@@ -76,7 +76,19 @@ public class MvcService {
                 articles.stream()
                         .map(article -> {
                             if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
-                                article.setAuthor(userDao.findById(article.getAuthor().getId()));
+
+                                User author = userDao.findById(article.getAuthor().getId());
+
+                                if (FetchType.EAGER.equals(arg2)) {
+                                    List<Role> roles = roleDao.findByUserId(author.getId());
+
+                                    if (roles.size() > 0) {
+                                        roles.forEach(role -> {
+                                            author.addRole(role.getRoleName());
+                                        });
+                                    }
+                                }
+                                article.setAuthor(author);
                             }
                             return article;
                         })

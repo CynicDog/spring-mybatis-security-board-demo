@@ -30,13 +30,15 @@
                     <div class="row m-2">
                         <label for="create-date" class="col-sm-2 col-form-label"><span style="white-space: nowrap">Joined Date</span></label>
                         <div class="col-sm-10">
-                            <p class="form-control" id="create-date"> ${articles.get(0).author.createDate} </p>
+                            <p class="form-control" id="create-date">
+                                <fmt:formatDate value="${articles.get(0).author.createDate}" pattern="yyyy-MM-dd"/>
+                            </p>
                         </div>
                     </div>
                     <div class="row m-2">
                         <label for="roles" class="col-sm-2 col-form-label"><span style="white-space: nowrap">Roles</span></label>
                         <div class="col-sm-10">
-                            <p class="form-control" id="roles"> ${articles.get(0).author.roles.forEach(role -> {System.out.print(role + " ")})} </p>
+                            <p class="form-control" id="roles"> ${articles.get(0).author.roles} </p>
                         </div>
                     </div>
 
@@ -46,13 +48,15 @@
                                 <div class="card-header">My Articles</div>
                                 <div class="card-body">
                                     <ol class="list-group list-group-numbered">
+                                        <c:forEach items="${articles}" var="article">
                                         <li class="list-group-item d-flex justify-content-between align-items-start">
                                             <div class="ms-2 me-auto">
-                                                <div class="fw-bold">Reviews</div>
-                                                Review Contents...
+                                                <div class="fw-bold">${article.title}</div>
+                                                ${article.content}
                                             </div>
-                                            <a href="" class="btn btn-danger btn-sm my-3" >delete</a>
+                                            <a href="" class="btn btn-outline-danger btn-sm my-3" >delete</a>
                                         </li>
+                                        </c:forEach>
                                     </ol>
                                 </div>
                             </div>

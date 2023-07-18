@@ -48,7 +48,7 @@ public class UserController {
             @AuthenticationPrincipal SecurityUser user,
             Model model) {
 
-        List<Article> articles = mvcService.findArticlesByAuthorId(user.getUser().getId(), FetchType.EAGER);
+        List<Article> articles = mvcService.findArticlesByAuthorId(user.getUser().getId(), FetchType.EAGER, FetchType.EAGER);
 
         model.addAttribute("articles", articles);
 
