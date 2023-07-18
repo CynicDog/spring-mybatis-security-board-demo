@@ -1,12 +1,14 @@
 package kr.co.jhta.service;
 
 import kr.co.jhta.repository.ArticleDao;
+import kr.co.jhta.repository.CommentDao;
 import kr.co.jhta.repository.RoleDao;
 import kr.co.jhta.repository.UserDao;
 import kr.co.jhta.response.ArticlesPaginated;
 import kr.co.jhta.util.FetchType;
 import kr.co.jhta.util.Pagination;
 import kr.co.jhta.vo.Article;
+import kr.co.jhta.vo.Comment;
 import kr.co.jhta.vo.Role;
 import kr.co.jhta.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,12 +27,14 @@ public class MvcService {
     private final RoleDao roleDao;
     private final ArticleDao articleDao;
     private final PasswordEncoder passwordEncoder;
+    private final CommentDao commentDao;
 
-    public MvcService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder) {
+    public MvcService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.articleDao = articleDao;
         this.passwordEncoder = passwordEncoder;
+        this.commentDao = commentDao;
     }
 
     public void insertUser(String email, String password) {
@@ -155,6 +159,44 @@ public class MvcService {
         return article;
     }
 
+    public void incrementArticleViewCount(Article article) {
+
+        article.setReadCount(article.getReadCount() + 1);
+        article.setUpdateDate(new Date());
+
+        articleDao.update(article);
+    }
+
+    public void insertComment(String content, User user, int articleId) {
+
+        Comment comment = new Comment(content, user, articleDao.findById(articleId));
+
+        Article article = articleDao.findById(articleId);
+        article.setReviewCount(article.getReviewCount() + 1);
+        articleDao.update(article);
+
+        commentDao.insertComment(comment);
+    }
+
+    public List<Comment> findCommentsByArticleId(int articleId, FetchType arg1, FetchType arg2) {
+
+        List<Comment> comments = commentDao.findCommentByArticleId(articleId);
+
+        List<Comment> commentPopulated = comments.stream().map(comment -> {
+            if (comment.getUser() != null && FetchType.EAGER.equals(arg1)) {
+                comment.setUser(userDao.findById(comment.getUser().getId()));
+            }
+            return comment;
+        }).map(comment -> {
+            if (comment.getArticle() != null && FetchType.EAGER.equals(arg2)) {
+                comment.setArticle(articleDao.findById(comment.getArticle().getId()));
+            }
+            return comment;
+        }).collect(Collectors.toList());
+
+        return commentPopulated;
+    }
+
     public User login(String email, String password) {
         return null;
     }
@@ -173,13 +215,6 @@ public class MvcService {
         return null;
     }
 
-    public void incrementArticleViewCount(Article article) {
-
-        article.setReadCount(article.getReadCount() + 1);
-        article.setUpdateDate(new Date());
-
-        articleDao.update(article);
-    }
 }
 
 

@@ -30,8 +30,11 @@ CREATE TABLE boards (
 CREATE TABLE comments (
                           id INT PRIMARY KEY AUTO_INCREMENT,
                           content VARCHAR(4000) NOT NULL,
+                          up INT default 0,
+                          down INT default 0,
                           user_id INT,
                           board_id INT,
                           FOREIGN KEY (user_id) REFERENCES users(id),
                           FOREIGN KEY (board_id) REFERENCES boards(id)
 );
+

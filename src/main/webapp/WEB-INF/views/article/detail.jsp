@@ -31,19 +31,30 @@
 
     <div class="row my-4 justify-content-center align-items-center">
         <div class="col-10">
-            Comments
+            Comments <span>(${comments.size()})</span>
             <hr/>
+            <c:forEach items="${comments}" var="comment">
             <div class="border rounded my-1">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold">Username</div>
+                        <div class="fw-bold">${comment.user.email}</div>
                         <div>
-
+                            ${comment.content}
                         </div>
                     </div>
                     <i class="bi bi-trash py-1 m-3"></i>
                 </li>
             </div>
+            </c:forEach>
+            <hr/>
+            <form method="post" action="leave-comment">
+                <input name="article-id" value="${article.id}" hidden>
+                <textarea rows="5" class="form-control" id="post-content" name="content"  ></textarea>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm my-1">leave a comment</button>
+                </div>
+<%--                TODO: up / down vote on comments --%>
+            </form>
         </div>
     </div>
 </div>

@@ -5,11 +5,14 @@ import kr.co.jhta.security.model.SecurityUser;
 import kr.co.jhta.service.MvcService;
 import kr.co.jhta.util.FetchType;
 import kr.co.jhta.vo.Article;
+import kr.co.jhta.vo.Comment;
 import org.jboss.logging.Logger;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/article")
@@ -51,6 +54,9 @@ public class BoardController {
         mvcService.incrementArticleViewCount(article);
         model.addAttribute("article", article);
 
+        List<Comment> comments = mvcService.findCommentsByArticleId(articleId, FetchType.EAGER, FetchType.LAZY);
+        model.addAttribute("comments", comments);
+
         return "article/detail";
     }
 
@@ -64,6 +70,17 @@ public class BoardController {
         model.addAttribute("response", articlesPaginated);
 
         return "article/list";
+    }
+
+    @PostMapping("/leave-comment")
+    public String comment(@RequestParam(value = "article-id") int articleId,
+                          @RequestParam(value = "content") String content,
+                          @AuthenticationPrincipal SecurityUser user,
+                          Model model) {
+
+        mvcService.insertComment(content, user.getUser(), articleId);
+
+        return "redirect:/article/detail?id=" + articleId;
     }
 
     // TODO: handler for delete operation

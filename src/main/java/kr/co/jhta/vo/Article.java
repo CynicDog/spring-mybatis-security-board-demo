@@ -1,7 +1,10 @@
 package kr.co.jhta.vo;
 
+import org.apache.ibatis.type.Alias;
+
 import java.util.Date;
 
+@Alias("Article")
 public class Article {
 
     private int id;

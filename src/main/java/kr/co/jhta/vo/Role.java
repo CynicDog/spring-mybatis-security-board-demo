@@ -1,7 +1,9 @@
 package kr.co.jhta.vo;
 
 import lombok.Builder;
+import org.apache.ibatis.type.Alias;
 
+@Alias("Role")
 public class Role {
 
     private User user;
