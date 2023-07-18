@@ -11,8 +11,28 @@
         )
     </insert>
 
-    <select id="findAllArticlesPaginated">
-
+    <select id="findAllArticlesPaginated" parameterType="int" resultType="Article">
+        select t.*
+        from (
+            select
+                id,
+                title,
+                content,
+                read_count as readCount,
+                review_count as reviewCount,
+                review_avg_score as reviewAvgScore,
+                deleted,
+                update_date as updateDate,
+                create_date as createDate,
+                user_id as 'author.id',
+                (@row_number := @row_number + 1) as rowNumber
+            from
+                boards, (select @row_number := 0) as t
+            order by
+                create_date desc
+        ) as t
+        where
+            rowNumber between #{begin} and #{end}
     </select>
 
     <select id="findAllArticles" resultType="Article">
@@ -68,5 +88,27 @@
         where
             user_id = #{value}
     </select>
+
+    <select id="getTotalRows">
+        select
+            count(*)
+        from
+            boards
+    </select>
+
+    <update id="update" parameterType="Article">
+        update
+            boards
+        set
+            title = #{title},
+            content = #{content},
+            read_count = #{readCount},
+            review_count = #{reviewCount},
+            review_avg_score = #{reviewAvgScore},
+            deleted = #{deleted},
+            update_date = #{updateDate}
+        where
+            id = #{id}
+    </update>
 
 </mapper>

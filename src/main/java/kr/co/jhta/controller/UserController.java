@@ -44,13 +44,12 @@ public class UserController {
     }
 
     @GetMapping("/my-page")
-    public String myPage(
-            @AuthenticationPrincipal SecurityUser user,
-            Model model) {
+    public String myPage(@AuthenticationPrincipal SecurityUser user, Model model) {
 
         List<Article> articles = mvcService.findArticlesByAuthorId(user.getUser().getId(), FetchType.EAGER, FetchType.EAGER);
 
         model.addAttribute("articles", articles);
+        model.addAttribute("user", user);
 
         return "user/my-page";
     }

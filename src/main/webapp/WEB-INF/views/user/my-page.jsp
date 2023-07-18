@@ -24,35 +24,45 @@
                     <div class="row m-2">
                         <label for="email" class="col-sm-2 col-form-label"><span style="white-space: nowrap">Email</span></label>
                         <div class="col-sm-10">
-                            <p class="form-control" id="email"> ${articles.get(0).author.email} </p>
+                            <p class="form-control" id="email"> ${user.username} </p>
                         </div>
                     </div>
                     <div class="row m-2">
                         <label for="create-date" class="col-sm-2 col-form-label"><span style="white-space: nowrap">Joined Date</span></label>
                         <div class="col-sm-10">
                             <p class="form-control" id="create-date">
-                                <fmt:formatDate value="${articles.get(0).author.createDate}" pattern="yyyy-MM-dd"/>
+                                <fmt:formatDate value="${user.user.createDate}" pattern="yyyy-MM-dd"/>
                             </p>
                         </div>
                     </div>
                     <div class="row m-2">
                         <label for="roles" class="col-sm-2 col-form-label"><span style="white-space: nowrap">Roles</span></label>
                         <div class="col-sm-10">
-                            <p class="form-control" id="roles"> ${articles.get(0).author.roles} </p>
+                            <c:forEach items="${user.user.roles}" var="role">
+                            <span class="form-control" id="roles">${role} </span>
+                            </c:forEach>
                         </div>
                     </div>
-
-                    <div class="row m-2">
+                    <c:if test="${not empty articles}" >
+                    <div class="row m-2 my-4">
                         <div class="col">
-                            <div class="card">
+                            <div class="card overflow-auto" style="max-height: 500px;">
                                 <div class="card-header">My Articles</div>
                                 <div class="card-body">
                                     <ol class="list-group list-group-numbered">
+
                                         <c:forEach items="${articles}" var="article">
                                         <li class="list-group-item d-flex justify-content-between align-items-start">
                                             <div class="ms-2 me-auto">
                                                 <div class="fw-bold">${article.title}</div>
-                                                ${article.content}
+                                                <c:choose>
+                                                    <c:when test="${article.content.length() gt 50}">
+                                                        ${article.content.substring(0, 50)} ...
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        ${article.content}
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                             <a href="" class="btn btn-outline-danger btn-sm my-3" >delete</a>
                                         </li>
@@ -62,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-
+                    </c:if>
                 </div>
             </div>
         </div>

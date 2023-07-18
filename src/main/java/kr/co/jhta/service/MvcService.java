@@ -3,13 +3,16 @@ package kr.co.jhta.service;
 import kr.co.jhta.repository.ArticleDao;
 import kr.co.jhta.repository.RoleDao;
 import kr.co.jhta.repository.UserDao;
+import kr.co.jhta.response.ArticlesPaginated;
 import kr.co.jhta.util.FetchType;
+import kr.co.jhta.util.Pagination;
 import kr.co.jhta.vo.Article;
 import kr.co.jhta.vo.Role;
 import kr.co.jhta.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,16 +57,13 @@ public class MvcService {
 
         List<Article> articles = articleDao.findAllArticles();
 
-        List<Article> articlesPopulated =
-                articles.stream()
-                        .map(article -> {
-                            if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
-                                article.setAuthor(userDao.findById(article.getAuthor().getId()));
-                            }
+        List<Article> articlesPopulated = articles.stream().map(article -> {
+            if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
+                article.setAuthor(userDao.findById(article.getAuthor().getId()));
+            }
 
-                            return article;
-                        })
-                        .collect(Collectors.toList());
+            return article;
+        }).collect(Collectors.toList());
 
         return articlesPopulated;
     }
@@ -72,29 +72,87 @@ public class MvcService {
 
         List<Article> articles = articleDao.findArticlesByAuthorId(id);
 
-        List<Article> articlesPopulated =
-                articles.stream()
-                        .map(article -> {
-                            if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
+        List<Article> articlesPopulated = articles.stream().map(article -> {
+            if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
 
-                                User author = userDao.findById(article.getAuthor().getId());
+                User author = userDao.findById(article.getAuthor().getId());
 
-                                if (FetchType.EAGER.equals(arg2)) {
-                                    List<Role> roles = roleDao.findByUserId(author.getId());
+                if (FetchType.EAGER.equals(arg2)) {
+                    List<Role> roles = roleDao.findByUserId(author.getId());
 
-                                    if (roles.size() > 0) {
-                                        roles.forEach(role -> {
-                                            author.addRole(role.getRoleName());
-                                        });
-                                    }
-                                }
-                                article.setAuthor(author);
-                            }
-                            return article;
-                        })
-                        .collect(Collectors.toList());
+                    if (roles.size() > 0) {
+                        roles.forEach(role -> {
+                            author.addRole(role.getRoleName());
+                        });
+                    }
+                }
+                article.setAuthor(author);
+            }
+            return article;
+        }).collect(Collectors.toList());
 
         return articlesPopulated;
+    }
+
+
+    public ArticlesPaginated findAllArticlesPaginated(int page, int rows, FetchType arg1, FetchType arg2) {
+
+        ArticlesPaginated articlesPaginated = new ArticlesPaginated();
+
+        int totalRows = articleDao.getTotalRows();
+        Pagination pagination = new Pagination(rows, 7, page, totalRows);
+
+        articlesPaginated.setPagination(pagination);
+
+        int begin = pagination.getBegin();
+        int end = pagination.getEnd();
+
+        List<Article> articles = articleDao.findAllArticlesPaginated(begin, end);
+
+        List<Article> articlesPopulated = articles.stream().map(article -> {
+            if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
+
+                User author = userDao.findById(article.getAuthor().getId());
+
+                if (FetchType.EAGER.equals(arg2)) {
+                    List<Role> roles = roleDao.findByUserId(author.getId());
+
+                    if (roles.size() > 0) {
+                        roles.forEach(role -> {
+                            author.addRole(role.getRoleName());
+                        });
+                    }
+                }
+                article.setAuthor(author);
+            }
+            return article;
+        }).collect(Collectors.toList());
+
+        articlesPaginated.setArticles(articlesPopulated);
+
+        return articlesPaginated;
+    }
+
+    public Article findArticleById(int articleId, FetchType arg1, FetchType arg2) {
+
+        Article article = articleDao.findById(articleId);
+
+        if (article.getAuthor() != null && FetchType.EAGER.equals(arg1)) {
+            User author = userDao.findById(article.getAuthor().getId());
+
+            if (FetchType.EAGER.equals(arg2)) {
+                List<Role> roles = roleDao.findByUserId(author.getId());
+
+                if (roles.size() > 0) {
+                    roles.forEach(role -> {
+                        author.addRole(role.getRoleName());
+                    });
+                }
+            }
+            article.setAuthor(author);
+        }
+
+        return article;
     }
 
     public User login(String email, String password) {
@@ -110,10 +168,17 @@ public class MvcService {
 
     public void createBoard(ArticleDao articleDao) {
     }
+
     public List<Article> findBoardsPaginated(Map<String, Objects> params) {
         return null;
     }
-    public void updateBoard(Article article) {
+
+    public void incrementArticleViewCount(Article article) {
+
+        article.setReadCount(article.getReadCount() + 1);
+        article.setUpdateDate(new Date());
+
+        articleDao.update(article);
     }
 }
 

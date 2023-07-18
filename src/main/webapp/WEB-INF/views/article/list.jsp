@@ -18,7 +18,13 @@
 <div class="container">
 	<div class="row my-3 justify-content-center align-items-center">
 		<div class="col-12">
-			<h1 class="border bg-light p-2 fs-4">Articles</h1>
+			<div class="border bg-light p-2 fs-4">Articles
+				<select class="form-select float-end mx-1" name="rows" style="width: 150px" onchange="changeRows()">
+					<option value="10" ${param.rows eq 10 ? 'selected' : ''}>10</option>
+					<option value="30" ${param.rows eq 30 ? 'selected' : ''}>30</option>
+					<option value="50" ${param.rows eq 50 ? 'selected' : ''}>50</option>
+				</select>
+			</div>
 		</div>
 	</div>
 	<div class="row my-3 justify-content-center align-items-center">
@@ -36,11 +42,18 @@
 				</thead>
 				<tbody>
 				<c:choose>
-					<c:when test="${not empty articles}">
-						<c:forEach items="${articles}" var="article">
+					<c:when test="${not empty response.articles}">
+						<c:forEach items="${response.articles}" var="article">
 							<tr>
 								<td>${article.id}</td>
-								<td><a href="">${article.title}</a></td>
+								<c:choose>
+									<c:when test="${article.title.length() gt 30}">
+										<td><a href="detail?id=${article.id}">${article.title.substring(0, 20)}...</a></td>
+									</c:when>
+									<c:otherwise>
+										<td><a href="detail?id=${article.id}">${article.title}</a></td>
+									</c:otherwise>
+								</c:choose>
 								<td>${article.readCount}</td>
 								<td>${article.reviewCount}</td>
 								<td>${article.author.email}</td>
@@ -67,27 +80,57 @@
 		<div class="col-12">
 			<nav>
 				<ul class="pagination justify-content-center">
-					<li class="page-item">
-						<a class="page-link"  href="list?page=1" >Prev</a>
+					<li class="page-item ${response.pagination.first ? 'disabled': ''}">
+						<a href="" class="page-link" onclick="changePage(event, 1)">First</a>
 					</li>
-					
-					<li class="page-item" >
-						<a class="page-link" href="list?page=1" >1</a>
+					<li class="page-item ${response.pagination.first ? 'disabled': ''}">
+						<a class="page-link" href="" onclick="changePage(event, ${response.pagination.prePage})" aria-label="Prev">
+							<span aria-hidden="true">&laquo;</span>
+							<span class="sr-only"></span>
+						</a>
 					</li>
-					<li class="page-item" >
-						<a class="page-link" href="list?page=2" >2</a>
+					<c:forEach var="num" begin="${response.pagination.beginPage}"
+							   end="${response.pagination.endPage}">
+						<li class="page-item ${response.pagination.page eq num ? "active" : ""}">
+							<a href="" class="page-link" onclick="changePage(event, ${num})">${num}</a>
+						</li>
+					</c:forEach>
+					<li class="page-item ${response.pagination.last ? 'disabled': ''}">
+						<a class="page-link" href="" onclick="changePage(event, ${response.pagination.nextPage})" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+							<span class="sr-only"></span>
+						</a>
 					</li>
-					<li class="page-item" >
-						<a class="page-link" href="list?page=3" >3</a>
-					</li>
-					
-					<li class="page-item">
-						<a class="page-link" href="list?page=2" >Next</a>
+					<li class="page-item ${response.pagination.last ? 'disabled': ''}">
+						<a href="" class="page-link" onclick="changePage(event, ${response.pagination.totalPages})">Last</a>
 					</li>
 				</ul>
 			</nav>
+			<form id="articles-pagination-control">
+				<input type="hidden" name="rows" value="${param.rows}">
+				<input type="hidden" name="page" value="${param.page}">
+			</form>
 		</div>
 	</div>
 </div>
 </body>
+<script>
+	function changeRows() {
+		let rows = document.querySelector("select[name=rows]").value;
+
+		document.querySelector("input[name=rows]").value = rows;
+		document.querySelector("input[name=page]").value = 1;
+
+		document.getElementById("articles-pagination-control").submit();
+	}
+
+	function changePage(event, page) {
+
+		event.preventDefault();
+
+		document.querySelector("input[name=page]").value = page;
+		document.getElementById("articles-pagination-control").submit();
+	}
+
+</script>
 </html>
