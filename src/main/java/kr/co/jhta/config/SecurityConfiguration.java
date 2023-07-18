@@ -18,6 +18,11 @@ public class SecurityConfiguration {
         return http
                 .csrf().disable()
 
+                .authorizeRequests(urlRegistry -> {
+                    urlRegistry.antMatchers("/article/add").authenticated();
+                    urlRegistry.antMatchers("/article/leave-comment").authenticated();
+                })
+
                 .formLogin(config -> {
                     config.loginPage("/user/login");
                     config.usernameParameter("email");

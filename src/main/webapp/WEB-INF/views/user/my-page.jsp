@@ -15,6 +15,9 @@
 </head>
 <body>
 <%@ include file="../common/navbar.jsp" %>
+
+<%--TODO: Social Network Service: followings and followers --%>
+
 <div class="container">
     <div class="row my-4 justify-content-center align-items-center">
         <div class="col-9">

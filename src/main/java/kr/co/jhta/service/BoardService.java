@@ -1,9 +1,7 @@
 package kr.co.jhta.service;
 
-import kr.co.jhta.repository.ArticleDao;
-import kr.co.jhta.repository.CommentDao;
-import kr.co.jhta.repository.RoleDao;
-import kr.co.jhta.repository.UserDao;
+import kr.co.jhta.repository.*;
+import kr.co.jhta.repository.jdbc.UserRepository;
 import kr.co.jhta.response.ArticlesPaginated;
 import kr.co.jhta.util.FetchType;
 import kr.co.jhta.util.Pagination;
@@ -21,20 +19,22 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class MvcService {
+public class BoardService {
 
     private final UserDao userDao;
     private final RoleDao roleDao;
     private final ArticleDao articleDao;
     private final PasswordEncoder passwordEncoder;
     private final CommentDao commentDao;
+    private final UserRepository userRepository;
 
-    public MvcService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao) {
+    public BoardService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao, UserRepository userRepository) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.articleDao = articleDao;
         this.passwordEncoder = passwordEncoder;
         this.commentDao = commentDao;
+        this.userRepository = userRepository;
     }
 
     public void insertUser(String email, String password) {
@@ -228,6 +228,11 @@ public class MvcService {
 
     public List<Article> findBoardsPaginated(Map<String, Objects> params) {
         return null;
+    }
+
+    public List<User> jdbc_findAllUsers() {
+
+        return (List) userRepository.findAll();
     }
 }
 

@@ -1,6 +1,6 @@
 package kr.co.jhta.controller;
 
-import kr.co.jhta.service.MvcService;
+import kr.co.jhta.service.BoardService;
 import kr.co.jhta.vo.Article;
 import org.jboss.logging.Logger;
 import org.springframework.stereotype.Controller;
@@ -15,18 +15,18 @@ import java.util.List;
 public class HomeController {
 
     private final Logger logger = Logger.getLogger(HomeController.class);
-    private final MvcService mvcService;
+    private final BoardService boardService;
 
-    public HomeController(MvcService mvcService) {
-        this.mvcService = mvcService;
+    public HomeController(BoardService boardService) {
+        this.boardService = boardService;
     }
 
     @GetMapping
     public String home(Model model) {
 
-        List<Article> mostViewedArticles = mvcService.findArticlesOrderedByReadCount(3);
-        List<Article> mostCommentedArticles = mvcService.findArticlesOrderedByReviewCount(5);
-        List<Article> mostRecentArticles = mvcService.findArticlesOrderedByCreateDate(4);
+        List<Article> mostViewedArticles = boardService.findArticlesOrderedByReadCount(3);
+        List<Article> mostCommentedArticles = boardService.findArticlesOrderedByReviewCount(5);
+        List<Article> mostRecentArticles = boardService.findArticlesOrderedByCreateDate(4);
 
         model.addAttribute("mostViewed", mostViewedArticles);
         model.addAttribute("mostCommented", mostCommentedArticles);

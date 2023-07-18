@@ -2,7 +2,7 @@ package kr.co.jhta.controller;
 
 import kr.co.jhta.response.ArticlesPaginated;
 import kr.co.jhta.security.model.SecurityUser;
-import kr.co.jhta.service.MvcService;
+import kr.co.jhta.service.BoardService;
 import kr.co.jhta.util.FetchType;
 import kr.co.jhta.vo.Article;
 import kr.co.jhta.vo.Comment;
@@ -19,10 +19,10 @@ import java.util.List;
 public class BoardController {
 
     private final Logger logger = Logger.getLogger(BoardController.class);
-    private final MvcService mvcService;
+    private final BoardService boardService;
 
-    public BoardController(MvcService mvcService) {
-        this.mvcService = mvcService;
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
     }
 
     @GetMapping("/add")
@@ -35,7 +35,7 @@ public class BoardController {
                       @RequestParam("title") String title,
                       @RequestParam("content") String content) {
 
-        mvcService.insertArticle(title, content, user.getUser());
+        boardService.insertArticle(title, content, user.getUser());
 
         return "redirect:/article/list";
     }
@@ -49,12 +49,12 @@ public class BoardController {
     public String detail(@RequestParam(value = "id", required = true) int articleId,
                          Model model) {
 
-        Article article = mvcService.findArticleById(articleId, FetchType.EAGER, FetchType.LAZY);
+        Article article = boardService.findArticleById(articleId, FetchType.EAGER, FetchType.LAZY);
 
-        mvcService.incrementArticleViewCount(article);
+        boardService.incrementArticleViewCount(article);
         model.addAttribute("article", article);
 
-        List<Comment> comments = mvcService.findCommentsByArticleId(articleId, FetchType.EAGER, FetchType.LAZY);
+        List<Comment> comments = boardService.findCommentsByArticleId(articleId, FetchType.EAGER, FetchType.LAZY);
         model.addAttribute("comments", comments);
 
         return "article/detail";
@@ -65,7 +65,7 @@ public class BoardController {
                        @RequestParam(value = "rows", required = false, defaultValue = "10") int rows,
                        Model model) {
 
-        ArticlesPaginated articlesPaginated = mvcService.findAllArticlesPaginated(page, rows, FetchType.EAGER, FetchType.EAGER);
+        ArticlesPaginated articlesPaginated = boardService.findAllArticlesPaginated(page, rows, FetchType.EAGER, FetchType.EAGER);
 
         model.addAttribute("response", articlesPaginated);
 
@@ -78,7 +78,7 @@ public class BoardController {
                           @AuthenticationPrincipal SecurityUser user,
                           Model model) {
 
-        mvcService.insertComment(content, user.getUser(), articleId);
+        boardService.insertComment(content, user.getUser(), articleId);
 
         return "redirect:/article/detail?id=" + articleId;
     }

@@ -43,7 +43,7 @@
                                         ${comment.content}
                                 </div>
                             </div>
-                                <i class="bi bi-trash py-1 m-3"></i>
+                            <i class="bi bi-trash py-1 m-3"></i>
                         </li>
                     </div>
                 </c:forEach>
@@ -52,13 +52,26 @@
             <form method="post" action="leave-comment">
                 <input name="article-id" value="${article.id}" hidden>
                 <textarea rows="5" class="form-control" id="post-content" name="content"></textarea>
-                <div class="text-end">
-                    <button type="submit" class="btn btn-outline-secondary btn-sm my-1">leave a comment</button>
-                </div>
+                <sec:authorize access="isAuthenticated()">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-secondary btn-sm my-1">leave a comment</button>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="isAnonymous()">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-secondary btn-sm my-1" onclick="loginFirst(event)">login first</button>
+                    </div>
+                </sec:authorize>
                 <%--                TODO: up / down vote on comments --%>
             </form>
         </div>
     </div>
 </div>
 </body>
+<script>
+    function loginFirst(){
+        event.preventDefault();
+        window.location.href="/user/login?error=denied";
+    }
+</script>
 </html>

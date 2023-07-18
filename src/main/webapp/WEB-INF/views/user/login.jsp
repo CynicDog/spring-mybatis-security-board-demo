@@ -19,6 +19,23 @@
     <div class="row my-3 justify-content-center align-items-center">
         <div class="col-8">
             <h1 class="border bg-light p-2 fs-4">Login</h1>
+            <c:choose>
+                <c:when test="${param.error eq 'fail'}">
+                    <script>
+                        alert("Bad Credentials");
+                    </script>
+                </c:when>
+                <c:when test="${param.error eq 'denied'}">
+                    <script>
+                        alert("You may need to be authenticated first.");
+                    </script>
+                </c:when>
+                <c:when test="${param.error eq 'forbidden'}">
+                    <script>
+                        alert("Not allowed with the granted authority of yours.");
+                    </script>
+                </c:when>
+            </c:choose>
         </div>
     </div>
     <div class="row my-3 justify-content-center align-items-center">
