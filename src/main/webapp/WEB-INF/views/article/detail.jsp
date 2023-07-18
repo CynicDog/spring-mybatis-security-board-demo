@@ -32,28 +32,30 @@
     <div class="row my-4 justify-content-center align-items-center">
         <div class="col-10">
             Comments <span>(${comments.size()})</span>
-            <hr/>
-            <c:forEach items="${comments}" var="comment">
-            <div class="border rounded my-1">
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">${comment.user.email}</div>
-                        <div>
-                            ${comment.content}
-                        </div>
+            <c:if test="${not empty comments}">
+                <hr/>
+                <c:forEach items="${comments}" var="comment">
+                    <div class="border rounded my-1">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="my-1"><span style="color: #888888">${comment.user.email}</span></div>
+                                <div>
+                                        ${comment.content}
+                                </div>
+                            </div>
+                                <i class="bi bi-trash py-1 m-3"></i>
+                        </li>
                     </div>
-                    <i class="bi bi-trash py-1 m-3"></i>
-                </li>
-            </div>
-            </c:forEach>
+                </c:forEach>
+            </c:if>
             <hr/>
             <form method="post" action="leave-comment">
                 <input name="article-id" value="${article.id}" hidden>
-                <textarea rows="5" class="form-control" id="post-content" name="content"  ></textarea>
+                <textarea rows="5" class="form-control" id="post-content" name="content"></textarea>
                 <div class="text-end">
                     <button type="submit" class="btn btn-outline-secondary btn-sm my-1">leave a comment</button>
                 </div>
-<%--                TODO: up / down vote on comments --%>
+                <%--                TODO: up / down vote on comments --%>
             </form>
         </div>
     </div>

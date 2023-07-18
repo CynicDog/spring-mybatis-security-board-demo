@@ -18,4 +18,7 @@ public interface ArticleDao {
     void update(Article article); // column `deleted` in the table of `Article` is to be changed as `Y`
     List<Article> findArticlesByAuthorId(int id);
     int getTotalRows();
+    List<Article> findArticlesOrderedByReadCount(@Param("limit") int limit);
+    List<Article> findArticlesOrderedByReviewCount(@Param("limit") int limit);
+    List<Article> findArticlesOrderedByCreateDate(@Param("limit") int limit);
 }

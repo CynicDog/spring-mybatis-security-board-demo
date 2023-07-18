@@ -197,6 +197,21 @@ public class MvcService {
         return commentPopulated;
     }
 
+    public List<Article> findArticlesOrderedByReadCount(int limit) {
+
+        return articleDao.findArticlesOrderedByReadCount(limit);
+    }
+
+    public List<Article> findArticlesOrderedByReviewCount(int limit) {
+
+        return articleDao.findArticlesOrderedByReviewCount(limit);
+    }
+
+    public List<Article> findArticlesOrderedByCreateDate(int limit) {
+
+        return articleDao.findArticlesOrderedByCreateDate(limit);
+    }
+
     public User login(String email, String password) {
         return null;
     }
@@ -214,7 +229,6 @@ public class MvcService {
     public List<Article> findBoardsPaginated(Map<String, Objects> params) {
         return null;
     }
-
 }
 
 

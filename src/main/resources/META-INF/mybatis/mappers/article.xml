@@ -111,4 +111,61 @@
             id = #{id}
     </update>
 
+    <select id="findArticlesOrderedByReadCount" parameterType="int" resultType="Article">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'author.id'
+        from
+            boards
+        order by
+            read_count desc
+        limit #{limit}
+    </select>
+
+    <select id="findArticlesOrderedByReviewCount" parameterType="int" resultType="Article">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'author.id'
+        from
+            boards
+        order by
+            review_count desc
+        limit #{limit}
+    </select>
+
+    <select id="findArticlesOrderedByCreateDate" parameterType="int" resultType="Article">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'author.id'
+        from
+            boards
+        order by
+            create_date desc
+        limit #{limit}
+    </select>
+
 </mapper>
