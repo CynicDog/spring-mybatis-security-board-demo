@@ -1,0 +1,51 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.repository.UserDao">
+    <insert id="insertUser" parameterType="User">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into users (
+            email, password
+        ) values (
+            #{email}, #{password}
+        )
+    </insert>
+
+    <select id="findByEmail" parameterType="string" resultType="User">
+        select
+            id,
+            email,
+            password,
+            update_date as updateDate,
+            create_date as createDate
+        from
+            users
+        where
+            email = #{value}
+    </select>
+
+    <select id="findById" parameterType="int" resultType="User">
+        select
+            id,
+            email,
+            password,
+            update_date as updateDate,
+            create_date as createDate
+        from
+            users
+        where
+            id = #{value}
+    </select>
+
+    <update id="update" parameterType="User">
+        update
+            users
+        set
+            email = #{email},
+            password = #{password},
+            update_date = #{updateDate},
+            create_date = #{createDate}
+        where
+            id = #{id}
+    </update>
+</mapper>

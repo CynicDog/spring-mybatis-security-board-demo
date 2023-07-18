@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.repository.BoardDao">
+    <insert id="insertBoard" parameterType="Board">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into boards (
+            title, content, read_count, review_count, review_avg_score, user_id
+        ) values (
+            #{title}, #{content}, #{readCount}, #{reviewCount}, #{reviewAvgScore}, #{user.id}
+        )
+    </insert>
+
+    <select id="findAllBoardsPaginated">
+
+    </select>
+
+    <select id="findById" parameterType="int" resultType="Board">
+        select
+            id,
+            title,
+            content,
+            read_count as readCount,
+            review_count as reviewCount,
+            review_avg_score as reviewAvgScore,
+            deleted,
+            update_date as updateDate,
+            create_date as createDate,
+            user_id as 'user.id'
+        from
+            boards
+        where
+            id = #{value}
+    </select>
+</mapper>
