@@ -38,7 +38,7 @@ CREATE TABLE comments (
                           FOREIGN KEY (board_id) REFERENCES boards(id)
 );
 
-CREATE TABLE friends (
+CREATE TABLE follows (
                          follower_id INT NOT NULL,
                          followed_id INT NOT NULL,
                          timestamp DATETIME NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE friends (
                          FOREIGN KEY (followed_id) REFERENCES users(id)
 );
 
-CREATE TABLE friend_requests (
+CREATE TABLE follow_requests (
                                  id INT NOT NULL AUTO_INCREMENT,
                                  sender_id INT NOT NULL,
                                  recipient_id INT NOT NULL,

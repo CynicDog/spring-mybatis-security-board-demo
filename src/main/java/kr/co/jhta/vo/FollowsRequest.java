@@ -4,19 +4,19 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
-@Alias("FriendsRequest")
+@Alias("FollowsRequest")
 @Getter @Setter
-public class FriendsRequest {
+public class FollowsRequest {
 
     private int id;
     private int senderId;
     private int recipientId;
     private RequestStatus status;
 
-    public FriendsRequest() {
+    public FollowsRequest() {
     }
 
-    public FriendsRequest(int senderId, int recipientId) {
+    public FollowsRequest(int senderId, int recipientId) {
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.status = RequestStatus.PENDING;

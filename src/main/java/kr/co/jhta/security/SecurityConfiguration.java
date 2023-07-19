@@ -1,4 +1,4 @@
-package kr.co.jhta.config;
+package kr.co.jhta.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,6 +19,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
 
                 .authorizeRequests(urlRegistry -> {
+                    urlRegistry.antMatchers("/user/my-page").authenticated();
                     urlRegistry.antMatchers("/article/add").authenticated();
                     urlRegistry.antMatchers("/article/leave-comment").authenticated();
                 })

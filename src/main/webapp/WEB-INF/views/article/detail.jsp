@@ -92,8 +92,8 @@
         var confirmation = confirm("Are you sure you want to send a request?");
 
         if (confirmation) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/friend/request?recipient-id=" + commenterId, true);
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/follow/request?recipient-id=" + commenterId, true);
             xhr.responseType = "text";
 
             xhr.onload = function () {

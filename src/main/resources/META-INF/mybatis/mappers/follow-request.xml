@@ -1,0 +1,48 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.repository.FollowsRequestDao">
+    <insert id="insertFollowsRequest" parameterType="FollowsRequest">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into follow_requests (
+            sender_id, recipient_id, status
+        ) values (
+            #{senderId}, #{recipientId}, #{status}
+        )
+    </insert>
+
+    <select id="checkIfExists" parameterType="int" resultType="boolean">
+        select exists (
+            select
+                1
+            from
+                follow_requests
+            where
+                sender_id = #{sender-id} and recipient_id = #{recipient-id}
+        ) as exist
+    </select>
+
+    <select id="findRequestsByRecipientId" parameterType="int" resultType="FollowsRequest">
+        select
+            id,
+            sender_id as `senderId`,
+            recipient_id as `recipientId`,
+            status
+        from
+            follow_requests
+        where
+            recipient_id = #{value}
+    </select>
+
+    <select id="findRequestsBySenderId" parameterType="int" resultType="FollowsRequest">
+        select
+            id,
+            sender_id as `senderId`,
+            recipient_id as `recipientId`,
+            status
+        from
+            follow_requests
+        where
+            sender_id = #{value}
+    </select>
+</mapper>

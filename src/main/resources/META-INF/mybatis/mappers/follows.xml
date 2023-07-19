@@ -1,10 +1,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.jhta.repository.FriendsDao">
-    <insert id="insertFriends" parameterType="Friends">
+<mapper namespace="kr.co.jhta.repository.FollowsDao">
+    <insert id="insertFollows" parameterType="Follows">
         <selectKey keyProperty="id" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into friends (
+        insert into follows (
             follower_id, followed_id, timestamp
         ) values (
             #{followerId}, #{followedId}, #{timestamp}

@@ -24,18 +24,18 @@ public class BoardService {
     private final PasswordEncoder passwordEncoder;
     private final CommentDao commentDao;
     private final UserRepository userRepository;
-    private final FriendsRequestDao friendsRequestDao;
-    private final FriendsDao friendsDao;
+    private final FollowsRequestDao followsRequestDao;
+    private final FollowsDao followsDao;
 
-    public BoardService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao, UserRepository userRepository, FriendsRequestDao friendsRequestDao, FriendsDao friendsDao) {
+    public BoardService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao, UserRepository userRepository, FollowsRequestDao followsRequestDao, FollowsDao followsDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.articleDao = articleDao;
         this.passwordEncoder = passwordEncoder;
         this.commentDao = commentDao;
         this.userRepository = userRepository;
-        this.friendsRequestDao = friendsRequestDao;
-        this.friendsDao = friendsDao;
+        this.followsRequestDao = followsRequestDao;
+        this.followsDao = followsDao;
     }
 
     public void insertUser(String email, String password) {
@@ -215,20 +215,31 @@ public class BoardService {
 
     public void queueRequest(int senderId, int recipientId) {
 
-        if (friendsRequestDao.checkIfExists(senderId, recipientId)) {
+        if (followsRequestDao.checkIfExists(senderId, recipientId)) {
             throw new RuntimeException("Already requested.");
         }
 
-        FriendsRequest friendsRequest = new FriendsRequest(senderId, recipientId);
-        friendsRequestDao.insertFriendsRequest(friendsRequest);
+        FollowsRequest followsRequest = new FollowsRequest(senderId, recipientId);
+        followsRequestDao.insertFollowsRequest(followsRequest);
     }
+
+    public List<FollowsRequest> findArrivedRequests(int recipientId) {
+
+        return followsRequestDao.findRequestsByRecipientId(recipientId);
+    }
+
+    public List<FollowsRequest> findSentRequests(int senderId) {
+
+        return followsRequestDao.findRequestsBySenderId(senderId);
+    }
+
 
     public User login(String email, String password) {
         return null;
     }
 
-    public User findUserDetailById(int userId) {
-        return null;
+    public User findUserById(int userId) {
+        return userDao.findById(userId);
     }
 
     public void modifyUser(User user) {
@@ -245,6 +256,8 @@ public class BoardService {
 
         return (List) userRepository.findAll();
     }
+
+
 }
 
 
