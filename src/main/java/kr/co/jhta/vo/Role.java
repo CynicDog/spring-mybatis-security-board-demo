@@ -8,9 +8,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("roles")
 public class Role {
     private User user;
-    // TODO: 1) change to `Integer userId`
-    // TODO: 2) assign constraint of composite primary keys
-    // TODO: 3) create a composite primary key class
     private String roleName;
 
     public Role() {
