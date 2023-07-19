@@ -12,7 +12,7 @@ import java.util.List;
 @Table("users")
 public class User {
 
-    private Integer id;
+    private int id;
     private String email;
     private String password;
     private Date updateDate;

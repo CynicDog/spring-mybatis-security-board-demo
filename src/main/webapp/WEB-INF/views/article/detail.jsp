@@ -38,7 +38,19 @@
                     <div class="border rounded my-1">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <div class="ms-2 me-auto">
-                                <div class="my-1"><span style="color: #888888">${comment.user.email}</span></div>
+                                <div class="my-1">
+                                    <span style="color: #888888">
+                                        ${comment.user.email}
+                                        <sec:authorize access="isAuthenticated()">
+                                            <sec:authentication property="principal.username" var="authenticatedUserEmail"/>
+                                            <c:if test="${comment.user.email ne authenticatedUserEmail}">
+                                                <i class="bi bi-envelope-fill ms-1"></i>
+                                                <i class="bi bi-person-plus-fill ms-1"
+                                                   onclick="sendRequest(${comment.user.id})"></i>
+                                            </c:if>
+                                        </sec:authorize>
+                                    </span>
+                                </div>
                                 <div>
                                         ${comment.content}
                                 </div>
@@ -59,7 +71,9 @@
                 </sec:authorize>
                 <sec:authorize access="isAnonymous()">
                     <div class="text-end">
-                        <button type="submit" class="btn btn-outline-secondary btn-sm my-1" onclick="loginFirst(event)">login first</button>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm my-1" onclick="loginFirst(event)">
+                            login first
+                        </button>
                     </div>
                 </sec:authorize>
                 <%--                TODO: up / down vote on comments --%>
@@ -69,9 +83,29 @@
 </div>
 </body>
 <script>
-    function loginFirst(){
+    function loginFirst() {
         event.preventDefault();
-        window.location.href="/user/login?error=denied";
+        window.location.href = "/user/login?error=denied";
+    }
+
+    function sendRequest(commenterId) {
+        var confirmation = confirm("Are you sure you want to send a request?");
+
+        if (confirmation) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/friend/request?recipient-id=" + commenterId, true);
+            xhr.responseType = "text";
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    alert("Request successfully sent.")
+                } else {
+                    alert(xhr.responseText);
+                }
+            };
+
+            xhr.send();
+        }
     }
 </script>
 </html>

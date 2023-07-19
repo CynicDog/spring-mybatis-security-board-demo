@@ -5,10 +5,7 @@ import kr.co.jhta.repository.jdbc.UserRepository;
 import kr.co.jhta.response.ArticlesPaginated;
 import kr.co.jhta.util.FetchType;
 import kr.co.jhta.util.Pagination;
-import kr.co.jhta.vo.Article;
-import kr.co.jhta.vo.Comment;
-import kr.co.jhta.vo.Role;
-import kr.co.jhta.vo.User;
+import kr.co.jhta.vo.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +24,18 @@ public class BoardService {
     private final PasswordEncoder passwordEncoder;
     private final CommentDao commentDao;
     private final UserRepository userRepository;
+    private final FriendsRequestDao friendsRequestDao;
+    private final FriendsDao friendsDao;
 
-    public BoardService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao, UserRepository userRepository) {
+    public BoardService(UserDao userDao, RoleDao roleDao, ArticleDao articleDao, PasswordEncoder passwordEncoder, CommentDao commentDao, UserRepository userRepository, FriendsRequestDao friendsRequestDao, FriendsDao friendsDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.articleDao = articleDao;
         this.passwordEncoder = passwordEncoder;
         this.commentDao = commentDao;
         this.userRepository = userRepository;
+        this.friendsRequestDao = friendsRequestDao;
+        this.friendsDao = friendsDao;
     }
 
     public void insertUser(String email, String password) {
@@ -210,6 +211,16 @@ public class BoardService {
     public List<Article> findArticlesOrderedByCreateDate(int limit) {
 
         return articleDao.findArticlesOrderedByCreateDate(limit);
+    }
+
+    public void queueRequest(int senderId, int recipientId) {
+
+        if (friendsRequestDao.checkIfExists(senderId, recipientId)) {
+            throw new RuntimeException("Already requested.");
+        }
+
+        FriendsRequest friendsRequest = new FriendsRequest(senderId, recipientId);
+        friendsRequestDao.insertFriendsRequest(friendsRequest);
     }
 
     public User login(String email, String password) {

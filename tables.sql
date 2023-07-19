@@ -38,3 +38,21 @@ CREATE TABLE comments (
                           FOREIGN KEY (board_id) REFERENCES boards(id)
 );
 
+CREATE TABLE friends (
+                         follower_id INT NOT NULL,
+                         followed_id INT NOT NULL,
+                         timestamp DATETIME NOT NULL,
+                         PRIMARY KEY (follower_id, followed_id),
+                         FOREIGN KEY (follower_id) REFERENCES users(id),
+                         FOREIGN KEY (followed_id) REFERENCES users(id)
+);
+
+CREATE TABLE friend_requests (
+                                 id INT NOT NULL AUTO_INCREMENT,
+                                 sender_id INT NOT NULL,
+                                 recipient_id INT NOT NULL,
+                                 status ENUM('PENDING', 'ACCEPTED', 'DECLINED') NOT NULL,
+                                 PRIMARY KEY (id),
+                                 FOREIGN KEY (sender_id) REFERENCES users(id),
+                                 FOREIGN KEY (recipient_id) REFERENCES users(id)
+);

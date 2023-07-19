@@ -46,40 +46,40 @@
                             </c:forEach>
                         </div>
                     </div>
-                    <c:if test="${not empty articles}" >
-                    <div class="row m-2 my-4">
-                        <div class="col">
-                            <div class="card overflow-auto" style="max-height: 500px;">
-                                <div class="card-header">My Articles</div>
-                                <div class="card-body">
-                                    <ol class="list-group list-group-numbered">
-
-                                        <c:forEach items="${articles}" var="article">
-                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                            <div class="ms-2 me-auto">
-                                                <div class="fw-bold">${article.title}</div>
-                                                <c:choose>
-                                                    <c:when test="${article.content.length() gt 50}">
-                                                        ${article.content.substring(0, 50)} ...
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${article.content}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                            <a href="" class="btn btn-outline-danger btn-sm my-3" >delete</a>
-                                        </li>
-                                        </c:forEach>
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </c:if>
                 </div>
             </div>
         </div>
     </div>
+    <c:if test="${not empty articles}" >
+        <div class="row my-4 justify-content-center align-items-center">
+            <div class="col-9">
+                <div class="card shadow overflow-auto" style="max-height: 500px;">
+                    <div class="card-header">My Articles</div>
+                    <div class="card-body">
+                        <ol class="list-group list-group-numbered">
+
+                            <c:forEach items="${articles}" var="article">
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">${article.title}</div>
+                                        <c:choose>
+                                            <c:when test="${article.content.length() gt 50}">
+                                                ${article.content.substring(0, 50)} ...
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${article.content}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <a href="" class="btn btn-outline-danger btn-sm my-3" >delete</a>
+                                </li>
+                            </c:forEach>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>
