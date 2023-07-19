@@ -52,10 +52,10 @@ public class UserController {
         return "user/my-page";
     }
 
-    @GetMapping("/jdbc-all-users")
+    @GetMapping("/jdbc/all-users")
     @ResponseBody
     public List<User> jdbcUsers() {
-        // http GET http://localhost:8082/user/jdbc-all-users
+        // http GET http://localhost:8082/user/jdbc/all-users
 
         return boardService.jdbc_findAllUsers();
     }

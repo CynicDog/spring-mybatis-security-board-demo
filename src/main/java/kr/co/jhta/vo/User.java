@@ -1,6 +1,5 @@
 package kr.co.jhta.vo;
 
-import lombok.Builder;
 import org.apache.ibatis.type.Alias;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
