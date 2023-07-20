@@ -45,4 +45,25 @@
         where
             sender_id = #{value}
     </select>
+
+    <select id="findRequestsBySenderIdAndRecipientId" parameterType="int" resultType="FollowsRequest">
+        select
+            id,
+            sender_id as `senderId`,
+            recipient_id as `recipientId`,
+            status
+        from
+            follow_requests
+        where
+            sender_id = #{sender-id} and recipient_id = #{recipient-id}
+    </select>
+
+    <update id="update" parameterType="FollowsRequest">
+        update
+            follow_requests
+        set
+            status = #{status}
+        where
+            sender_id = #{senderId} and recipient_id = #{recipientId}
+    </update>
 </mapper>

@@ -16,9 +16,6 @@
 </head>
 <body>
 <%@ include file="../common/navbar.jsp" %>
-
-<%--TODO: Social Network Service: followings and followers --%>
-
 <div class="container">
     <div class="row my-4">
         <c:if test="${not empty articles}">
@@ -88,6 +85,23 @@
             <div class="card shadow">
                 <div class="card-header">Socials</div>
                 <div class="card-body">
+
+                    <c:if test="${not empty followings}"></c:if>
+                    <c:if test="${not empty follwers}"></c:if>
+
+                    <div class="row m-3">
+                        <div class="col">
+                            <div class="border rounded">
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="border rounded">
+
+                            </div>
+                        </div>
+                    </div>
+
                     <c:if test="${not empty recipients}">
                         <div class="p-2 m-3">
                             <p class="my-1">Sent requests</p>
@@ -130,12 +144,13 @@
     function accept(senderId) {
 
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/follow/accept?id=" + senderId, true);
+        xhr.open("POST", "/follow/accept?sender-id=" + senderId, true);
         xhr.responseType = "text";
 
         xhr.onload = function () {
             if (xhr.status === 200) {
                 alert("success message")
+                window.location.reload();
             } else {
                 alert(xhr.responseText);
             }

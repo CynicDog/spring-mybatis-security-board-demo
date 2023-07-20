@@ -28,7 +28,6 @@
             </div>
         </div>
     </div>
-
     <div class="row my-4 justify-content-center align-items-center">
         <div class="col-10">
             Comments <span>(${comments.size()})</span>
@@ -42,11 +41,20 @@
                                     <span style="color: #888888">
                                         ${comment.user.email}
                                         <sec:authorize access="isAuthenticated()">
-                                            <sec:authentication property="principal.username" var="authenticatedUserEmail"/>
+                                            <sec:authentication property="principal.username"
+                                                                var="authenticatedUserEmail"/>
                                             <c:if test="${comment.user.email ne authenticatedUserEmail}">
                                                 <i class="bi bi-envelope-fill ms-1"></i>
                                                 <i class="bi bi-person-plus-fill ms-1"
-                                                   onclick="sendRequest(${comment.user.id})"></i>
+                                                   id="follow-icon"
+                                                   data-bs-container="body"
+                                                   data-bs-toggle="popover"
+                                                   data-bs-placement="top"
+                                                   data-bs-html="true"
+                                                   data-bs-content="<p class='link-secondary m-1' id='follow-confirmation'>Wanna follow?</p>"
+                                                   data-commenter='${comment.user.id}'
+                                                >
+                                                </i>
                                             </c:if>
                                         </sec:authorize>
                                     </span>
@@ -81,7 +89,6 @@
         </div>
     </div>
 </div>
-</body>
 <script>
     function loginFirst() {
         event.preventDefault();
@@ -89,23 +96,37 @@
     }
 
     function sendRequest(commenterId) {
-        var confirmation = confirm("Are you sure you want to send a request?");
 
-        if (confirmation) {
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "/follow/request?recipient-id=" + commenterId, true);
-            xhr.responseType = "text";
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/follow/request?recipient-id=" + commenterId, true);
+        xhr.responseType = "text";
 
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    alert("Request successfully sent.")
-                } else {
-                    alert(xhr.responseText);
-                }
-            };
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert("Request successfully sent.")
+            } else {
+                alert(xhr.responseText);
+            }
+        };
 
-            xhr.send();
-        }
+        xhr.send();
     }
+
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('#follow-confirmation')) {
+
+            let iconElem = document.querySelector("#follow-icon");
+            let commenterId = iconElem.getAttribute('data-commenter');
+
+            sendRequest(commenterId);
+        }
+    });
+
 </script>
+</body>
 </html>

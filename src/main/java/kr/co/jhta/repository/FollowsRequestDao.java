@@ -16,4 +16,8 @@ public interface FollowsRequestDao {
     List<FollowsRequest> findRequestsByRecipientId(int recipientId);
 
     List<FollowsRequest> findRequestsBySenderId(int senderId);
+
+    FollowsRequest findRequestsBySenderIdAndRecipientId(@Param("sender-id") int senderId, @Param("recipient-id") int recipientId);
+
+    void update(FollowsRequest followsRequest);
 }

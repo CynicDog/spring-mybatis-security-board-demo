@@ -233,8 +233,15 @@ public class BoardService {
         return followsRequestDao.findRequestsBySenderId(senderId);
     }
 
-    public void acceptRequest(int senderId, int id) {
-        // TODO
+    public void acceptRequest(int senderId, int recipientId) {
+
+        FollowsRequest followsRequest = followsRequestDao.findRequestsBySenderIdAndRecipientId(senderId, recipientId);
+
+        followsRequest.setStatus(FollowsRequest.RequestStatus.ACCEPTED);
+        followsRequestDao.update(followsRequest);
+
+        Follows follows = new Follows(senderId, recipientId);
+        followsDao.insertFollows(follows);
     }
 
     public User login(String email, String password) {

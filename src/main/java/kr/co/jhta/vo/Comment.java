@@ -27,6 +27,10 @@ public class Comment {
         this.article = article;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getContent() {
         return content;
     }

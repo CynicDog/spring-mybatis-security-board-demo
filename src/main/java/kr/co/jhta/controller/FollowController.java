@@ -39,7 +39,7 @@ public class FollowController {
 
     @PostMapping("/accept")
     public ResponseEntity accept(
-            @RequestParam("id") int senderId,
+            @RequestParam("sender-id") int senderId,
             @AuthenticationPrincipal SecurityUser user) {
 
         try {

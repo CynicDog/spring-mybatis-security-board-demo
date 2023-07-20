@@ -53,6 +53,7 @@ public class UserController {
         // sent requests
         List<FollowsRequest> requestsSent = boardService.findSentRequests(user.getUser().getId());
         List<User> recipients = requestsSent.stream()
+                .filter(request -> FollowsRequest.RequestStatus.PENDING.equals(request.getStatus()))
                 .map(request -> boardService.findUserById(request.getRecipientId()))
                 .collect(Collectors.toList());
         model.addAttribute("recipients", recipients);
@@ -60,6 +61,7 @@ public class UserController {
         // arrived requests
         List<FollowsRequest> requestsArrived = boardService.findArrivedRequests(user.getUser().getId());
         List<User> senders = requestsArrived.stream()
+                .filter(request -> FollowsRequest.RequestStatus.PENDING.equals(request.getStatus()))
                 .map(request -> boardService.findUserById(request.getSenderId()))
                 .collect(Collectors.toList());
         model.addAttribute("senders", senders);
