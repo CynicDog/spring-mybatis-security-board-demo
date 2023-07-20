@@ -83,25 +83,44 @@
                 </div>
             </div>
             <div class="card shadow">
-                <div class="card-header">Socials</div>
-                <div class="card-body">
-
-                    <c:if test="${not empty followings}"></c:if>
-                    <c:if test="${not empty follwers}"></c:if>
-
-                    <div class="row m-3">
+                <div class="card-header">
+                    <div class="row align-items-center">
                         <div class="col">
-                            <div class="border rounded">
-
-                            </div>
+                            Socials
                         </div>
-                        <div class="col">
-                            <div class="border rounded">
-
+                        <div class="col text-end">
+                            <div class="badge text-bg-secondary position-relative mx-2"
+                                 id="followers-icon"
+                                 data-bs-container="body"
+                                 data-bs-toggle="popover"
+                                 data-bs-placement="bottom"
+                                 data-bs-html="true"
+                                 data-bs-content="<p class='link-secondary m-1' id='follow-list'>Here's your followers</p>">
+                                followers
+<%--                                <c:if test="${not empty follwers}">--%>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    99+
+                                </span>
+<%--                                </c:if>--%>
+                            </div>
+                            <div class="badge text-bg-secondary position-relative mx-2"
+                                 id="followings-icon"
+                                 data-bs-container="body"
+                                 data-bs-toggle="popover"
+                                 data-bs-placement="bottom"
+                                 data-bs-html="true"
+                                 data-bs-content="<p class='link-secondary m-1' id='follow-list'>Here's your followers</p>">
+                                followings
+<%--                                <c:if test="${not empty followings}">--%>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    99+
+                                </span>
+<%--                                </c:if>--%>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="card-body">
                     <c:if test="${not empty recipients}">
                         <div class="p-2 m-3">
                             <p class="my-1">Sent requests</p>
@@ -176,6 +195,11 @@
 
         xhr.send();
     }
+
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
 
 </script>
 </html>

@@ -52,8 +52,7 @@
                                                    data-bs-placement="top"
                                                    data-bs-html="true"
                                                    data-bs-content="<p class='link-secondary m-1' id='follow-confirmation'>Wanna follow?</p>"
-                                                   data-commenter='${comment.user.id}'
-                                                >
+                                                   data-commenter='${comment.user.id}'>
                                                 </i>
                                             </c:if>
                                         </sec:authorize>
@@ -112,8 +111,8 @@
         xhr.send();
     }
 
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     })
 

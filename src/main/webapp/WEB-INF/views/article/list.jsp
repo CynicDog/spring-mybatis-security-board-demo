@@ -47,8 +47,8 @@
 							<tr>
 								<td>${article.id}</td>
 								<c:choose>
-									<c:when test="${article.title.length() gt 30}">
-										<td><a href="detail?id=${article.id}">${article.title.substring(0, 20)}...</a></td>
+									<c:when test="${article.title.length() gt 25}">
+										<td><a href="detail?id=${article.id}" class="link-secondary link-underline-opacity-0">${article.title.substring(0, 25)}...</a></td>
 									</c:when>
 									<c:otherwise>
 										<td><a href="detail?id=${article.id}">${article.title}</a></td>
