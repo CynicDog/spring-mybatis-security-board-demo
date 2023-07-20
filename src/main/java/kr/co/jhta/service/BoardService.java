@@ -233,6 +233,9 @@ public class BoardService {
         return followsRequestDao.findRequestsBySenderId(senderId);
     }
 
+    public void acceptRequest(int senderId, int id) {
+        // TODO
+    }
 
     public User login(String email, String password) {
         return null;
@@ -256,8 +259,6 @@ public class BoardService {
 
         return (List) userRepository.findAll();
     }
-
-
 }
 
 

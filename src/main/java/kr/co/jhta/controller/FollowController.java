@@ -26,8 +26,7 @@ public class FollowController {
     @GetMapping("/request")
     public ResponseEntity request(
                 @AuthenticationPrincipal SecurityUser user,
-                @RequestParam("recipient-id") int recipientId
-            ) {
+                @RequestParam("recipient-id") int recipientId) {
 
         try {
             boardService.queueRequest(user.getUser().getId(), recipientId);
