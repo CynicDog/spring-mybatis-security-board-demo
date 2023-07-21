@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
 </head>
 <body>
@@ -44,7 +44,14 @@
                                             <sec:authentication property="principal.username"
                                                                 var="authenticatedUserEmail"/>
                                             <c:if test="${comment.user.email ne authenticatedUserEmail}">
-                                                <i class="bi bi-envelope-fill ms-1"></i>
+                                                <i class="bi bi-envelope-fill ms-1"
+                                                   id="mail-icon"
+                                                   data-bs-container="body"
+                                                   data-bs-toggle="popover"
+                                                   data-bs-placement="bottom"
+                                                   data-bs-html="true"
+                                                   data-bs-content="<p class='link-secondary m-1' id='mail-confirmation'>Wanna write to?</p>"
+                                                   data-commenter='${comment.user.id}'></i>
                                                 <i class="bi bi-person-plus-fill ms-1"
                                                    id="follow-icon"
                                                    data-bs-container="body"
@@ -64,6 +71,37 @@
                             </div>
                             <i class="bi bi-trash py-1 m-3"></i>
                         </li>
+                    </div>
+                    <div class="toast-container position-fixed bottom-0 end-0 p-4">
+                        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <div class="me-auto">To: <strong>${comment.user.email}</strong></div>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="fw-lighter" for="floatingInput">title</label>
+                                        <input class="form-control-plaintext" name="title" id="floatingInput">
+                                        <label class="fw-lighter" for="floatingTextarea">content</label>
+                                        <textarea class="form-control-plaintext my-1" name="content" id="floatingTextarea" style="height: 350px"></textarea>
+                                    </div>
+                                </div>
+                                <div class="text-start">
+                                    <i class="fs-6 bi bi-send m-1" style="color: #838383" onclick="sendEmail('${comment.user.email}')"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<%--                    TODO --%>
+                    <div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Sent successfully :)
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
                     </div>
                 </c:forEach>
             </c:if>
@@ -111,6 +149,15 @@
         xhr.send();
     }
 
+    // TODO:
+    function sendEmail(commenterEmail) {
+        console.log(commenterEmail);
+
+        let toastLiveExample = document.getElementById('liveToast')
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastBootstrap.hide();
+    }
+
     let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
@@ -125,6 +172,16 @@
             sendRequest(commenterId);
         }
     });
+
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('#mail-confirmation')) {
+
+            let toastLiveExample = document.getElementById('liveToast')
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show()
+        }
+    })
 
 </script>
 </body>

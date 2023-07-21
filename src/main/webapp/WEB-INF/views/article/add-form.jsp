@@ -18,20 +18,20 @@
 <div class="container">
 	<div class="row my-3 justify-content-center align-items-center">
 		<div class="col-8">
-			<h4 class="border bg-light p-2">Publish an article.</h4>
+			<h4 class="border p-2">Publish an article.</h4>
 		</div>
 	</div>
 	<div class="row my-3 justify-content-center align-items-center">
 		<div class="col-8">
 
-			<form class="border bg-light p-3" method="post" action="add" >
-				<div class="form-group mb-3">
+			<form class="border rounded p-3" method="post" action="add" >
+				<div class="form-group my-3">
 					<label class="form-label">Title</label>
-					<input type="text" class="form-control" id="post-title" name="title"/>
+					<input type="text" class="form-control" id="article-title" name="title"/>
 				</div>
-				<div class="form-group mb-3">
+				<div class="form-group my-3">
 					<label class="form-label">Content</label>
-					<textarea rows="5" class="form-control" id="post-content" name="content"></textarea>
+					<textarea rows="5" class="form-control" id="article-content" name="content"></textarea>
 				</div>
 				<div class="text-end">
 					<a href="list?page=1" class="btn btn-secondary btn-sm">cancel</a>

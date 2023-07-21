@@ -16,28 +16,28 @@
 <body>
 <%@ include file="../common/navbar.jsp" %>
 <div class="container">
-    <div class="row my-3 justify-content-center align-items-center">
-        <div class="col-8">
-            <h1 class="border bg-light p-2 fs-4">Signup</h1>
-        </div>
-    </div>
-    <div class="row my-3 justify-content-center align-items-center">
-        <div class="col-8">
-            <form class="border bg-light p-3" method="post" action="register">
-                <div class="form-group mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="text" class="form-control" name="email" id="user-email"/>
+    <div>
+        <div class="row my-2 justify-content-center align-items-center">
+            <div class="col-8">
+                <div class="card shadow my-5">
+                    <div class="card-header">Sign up</div>
+                    <div class="card-body">
+                        <div class="row my-2 p-2">
+                            <form method="post" action="register">
+                                <div class="form-group my-3">
+                                    <input type="email" class="form-control" name="email" placeholder="example@test.com">
+                                </div>
+                                <div class="form-group my-3">
+                                    <input type="password" class="form-control" name="password" placeholder="password">
+                                </div>
+                                <div class="text-end my-2">
+                                    <button class="btn btn-outline-secondary btn-sm">submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" id="user-password" />
-                </div>
-
-                <div class="text-end">
-                    <a href="/" class="btn btn-secondary btn-sm">cancel</a>
-                    <button type="submit" class="btn btn-primary btn-sm">signup</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

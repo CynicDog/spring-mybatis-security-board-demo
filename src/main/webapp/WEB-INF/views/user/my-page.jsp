@@ -18,13 +18,12 @@
 <%@ include file="../common/navbar.jsp" %>
 <div class="container">
     <div class="row my-4">
-        <c:if test="${not empty articles}">
             <div class="col-md-5 my-2">
                 <div class="card shadow overflow-auto" style="max-height: 900px;">
                     <div class="card-header">My Articles</div>
                     <div class="card-body">
+                        <c:if test="${not empty articles}">
                         <ol class="list-group list-group-numbered">
-
                             <c:forEach items="${articles}" var="article">
                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                     <div class="ms-2 me-auto">
@@ -42,13 +41,28 @@
                                 </li>
                             </c:forEach>
                         </ol>
+                        </c:if>
+                        <c:if test="${empty articles}">
+                            <p class="my-1">No articles published yet.</p>
+                        </c:if>
                     </div>
                 </div>
             </div>
-        </c:if>
+
         <div class="col-md-7 my-2">
             <div class="card shadow mb-3">
-                <div class="card-header">My Page</div>
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8">My Page</div>
+                        <div class="col-4 d-flex justify-content-end"> <!-- Use justify-content-end to align the content to the right -->
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                <%-- TODO: Behaviors on public / private account --%>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Private</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row m-2">
                         <div class="col-sm-3">
@@ -97,11 +111,11 @@
                                  data-bs-html="true"
                                  data-bs-content="<p class='link-secondary m-1' id='follow-list'>Here's your followers</p>">
                                 followers
-<%--                                <c:if test="${not empty follwers}">--%>
+                                <%--                                <c:if test="${not empty follwers}">--%>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     99+
                                 </span>
-<%--                                </c:if>--%>
+                                <%--                                </c:if>--%>
                             </div>
                             <div class="badge text-bg-secondary position-relative mx-2"
                                  id="followings-icon"
@@ -111,11 +125,11 @@
                                  data-bs-html="true"
                                  data-bs-content="<p class='link-secondary m-1' id='follow-list'>Here's your followers</p>">
                                 followings
-<%--                                <c:if test="${not empty followings}">--%>
+                                <%--                                <c:if test="${not empty followings}">--%>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     99+
                                 </span>
-<%--                                </c:if>--%>
+                                <%--                                </c:if>--%>
                             </div>
                         </div>
                     </div>
@@ -129,7 +143,7 @@
                                 <div class="border rounded p-2 my-2 d-flex align-items-center">
                                     <span class="fw-bold mx-1">${recipient.email}</span>
                                     <div class="ms-auto">
-                                        <span class="badge bg-primary">Pending</span>
+                                        <span class="badge bg-secondary my-1">Pending</span>
                                     </div>
                                 </div>
                             </c:forEach>

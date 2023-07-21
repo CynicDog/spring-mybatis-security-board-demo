@@ -82,8 +82,4 @@ public class BoardController {
 
         return "redirect:/article/detail?id=" + articleId;
     }
-
-    // TODO: handler for delete operation
-    // TODO: handler for modification form request
-    // TODO: handler for modification operation
 }
