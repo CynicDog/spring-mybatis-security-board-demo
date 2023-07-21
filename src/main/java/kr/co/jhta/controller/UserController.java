@@ -35,7 +35,7 @@ public class UserController {
 
         boardService.insertUser(email, password);
 
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
     @GetMapping("/login")

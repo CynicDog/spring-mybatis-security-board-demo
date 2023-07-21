@@ -58,9 +58,10 @@
                                                    data-bs-toggle="popover"
                                                    data-bs-placement="top"
                                                    data-bs-html="true"
-                                                   data-bs-content="<p class='link-secondary m-1' id='follow-confirmation'>Wanna follow?</p>"
-                                                   data-commenter='${comment.user.id}'>
-                                                </i>
+                                                   data-bs-content="
+                                                       <p class='link-secondary m-1 ${comment.user.id}' id='follow-confirmation'>Wanna follow?</p>
+                                                   "
+                                                   ></i>
                                             </c:if>
                                         </sec:authorize>
                                     </span>
@@ -83,24 +84,40 @@
                                 <div class="row">
                                     <div class="col">
                                         <label class="fw-lighter" for="floatingInput">title</label>
-                                        <input class="form-control-plaintext" name="title" id="floatingInput">
+                                        <input class="form-control-plaintext" name="mail-title" id="floatingInput">
                                         <label class="fw-lighter" for="floatingTextarea">content</label>
-                                        <textarea class="form-control-plaintext my-1" name="content" id="floatingTextarea" style="height: 350px"></textarea>
+                                        <textarea class="form-control-plaintext my-1" name="mail-content"
+                                                  id="floatingTextarea" style="height: 350px"></textarea>
                                     </div>
                                 </div>
                                 <div class="text-start">
-                                    <i class="fs-6 bi bi-send m-1" style="color: #838383" onclick="sendEmail('${comment.user.email}')"></i>
+                                    <i class="fs-6 bi bi-send m-1" style="color: #838383"
+                                       onclick="sendEmail('${comment.user.email}')"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-<%--                    TODO --%>
-                    <div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="d-flex">
-                            <div class="toast-body">
-                                Sent successfully :)
+
+                    <div class="toast-container position-fixed bottom-0 end-0 p-4">
+                        <div id="successfulToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+                             aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    Done successfully :)
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>
-                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="toast-container position-fixed bottom-0 end-0 p-4">
+                        <div id="failedToast" class="toast align-items-center text-bg-secondary border-0" role="alert"
+                             aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    Something happened :(
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
                         </div>
                     </div>
                 </c:forEach>
@@ -140,9 +157,9 @@
 
         xhr.onload = function () {
             if (xhr.status === 200) {
-                alert("Request successfully sent.")
+                successfulToast("Request successfully sent.")
             } else {
-                alert(xhr.responseText);
+                failedToast(xhr.responseText);
             }
         };
 
@@ -151,11 +168,34 @@
 
     // TODO:
     function sendEmail(commenterEmail) {
-        console.log(commenterEmail);
+
+        console.log(commenterEmail)
 
         let toastLiveExample = document.getElementById('liveToast')
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-        toastBootstrap.hide();
+        const toastLiveBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastLiveBootstrap.hide();
+
+        successfulToast("Sent successfully :)");
+    }
+
+    function successfulToast(message) {
+        let successfulToast = document.getElementById('successfulToast')
+
+        const toastBody = document.querySelector('.toast-container #successfulToast .toast-body');
+        toastBody.textContent = message;
+
+        const toastSentBootstrap = bootstrap.Toast.getOrCreateInstance(successfulToast)
+        toastSentBootstrap.show()
+    }
+
+    function failedToast(message) {
+        let failedToast = document.getElementById('failedToast')
+
+        const toastBody = document.querySelector('.toast-container #failedToast .toast-body');
+        toastBody.textContent = message;
+
+        const toastSentBootstrap = bootstrap.Toast.getOrCreateInstance(failedToast)
+        toastSentBootstrap.show()
     }
 
     let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
@@ -166,8 +206,10 @@
     document.body.addEventListener('click', function (event) {
         if (event.target.matches('#follow-confirmation')) {
 
-            let iconElem = document.querySelector("#follow-icon");
-            let commenterId = iconElem.getAttribute('data-commenter');
+            let targetElementClassList = event.target.getAttribute('class').split(' ');
+            let commenterId = targetElementClassList[targetElementClassList.length - 1];
+
+            console.log(commenterId);
 
             sendRequest(commenterId);
         }
@@ -177,7 +219,6 @@
         if (event.target.matches('#mail-confirmation')) {
 
             let toastLiveExample = document.getElementById('liveToast')
-
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
             toastBootstrap.show()
         }
