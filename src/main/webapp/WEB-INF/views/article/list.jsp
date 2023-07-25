@@ -143,6 +143,5 @@
         document.querySelector("input[name=page]").value = page;
         document.getElementById("articles-pagination-control").submit();
     }
-
 </script>
 </html>

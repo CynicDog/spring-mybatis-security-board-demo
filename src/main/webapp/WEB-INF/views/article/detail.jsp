@@ -52,6 +52,7 @@
                                                    data-bs-html="true"
                                                    data-bs-content="<p class='link-secondary m-1' id='mail-confirmation'>Wanna write to?</p>"
                                                    data-commenter='${comment.user.id}'></i>
+<%--                                               TODO --%>
                                                 <i class="bi bi-person-plus-fill ms-1"
                                                    id="follow-icon"
                                                    data-bs-container="body"

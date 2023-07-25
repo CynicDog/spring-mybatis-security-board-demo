@@ -25,7 +25,7 @@ public class HomeController {
     public String home(Model model) {
 
         List<Article> mostViewedArticles = boardService.findArticlesOrderedByReadCount(3);
-        List<Article> mostCommentedArticles = boardService.findArticlesOrderedByReviewCount(5);
+        List<Article> mostCommentedArticles = boardService.findArticlesOrderedByReviewCount(4);
         List<Article> mostRecentArticles = boardService.findArticlesOrderedByCreateDate(4);
 
         model.addAttribute("mostViewed", mostViewedArticles);
