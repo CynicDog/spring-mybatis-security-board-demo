@@ -21,7 +21,7 @@ CREATE TABLE boards (
                         review_count FLOAT DEFAULT 0,
                         review_avg_score FLOAT DEFAULT 0.0,
                         deleted CHAR(1) DEFAULT 'N',
-                        updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         user_id INT,
                         FOREIGN KEY (user_id) REFERENCES users(id)
